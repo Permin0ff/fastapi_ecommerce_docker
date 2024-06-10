@@ -2,16 +2,13 @@ services:
   web:
     # Берем Dockerfile из каталога app
     build:
-      context: app
-      dockerfile: Dockerfile.prod
+      context: .
+      dockerfile: ./app/Dockerfile.prod
     # Запускаем тестовый сервер
     command: uvicorn app.main:app --host 0.0.0.0
-    # куда будут помещены данные из каталога app
-    volumes:
-      - .:/app
     # Открываем порт 8000 внутри и снаружи
-    #ports:
-    #  - 8000:8000
+    ports:
+      - 8000:8000
     depends_on:
       - db
 
@@ -27,7 +24,7 @@ services:
   nginx:
     build: nginx
     ports:
-      - 80:80
+      - 127.0.0.1:8080:80
     depends_on:
       - web
 
