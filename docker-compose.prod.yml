@@ -1,3 +1,4 @@
+name: fastapi-ecommerce-prod
 services:
   web:
     # Берем Dockerfile из каталога app
@@ -5,10 +6,10 @@ services:
       context: .
       dockerfile: ./app/Dockerfile.prod
     # Запускаем тестовый сервер
-    command: uvicorn app.main:app --host 0.0.0.0
+    command: gunicorn app.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
     # Открываем порт 8000 внутри и снаружи
-    ports:
-      - 8000:8000
+    # ports:
+    #  - 8000:8000
     depends_on:
       - db
 
@@ -24,7 +25,7 @@ services:
   nginx:
     build: nginx
     ports:
-      - 127.0.0.1:8080:80
+      - 80:80
     depends_on:
       - web
 
