@@ -1,3 +1,4 @@
+name: fastapi-ecommerce-test
 services:
   web:
     # Берем Dockerfile из каталога app
